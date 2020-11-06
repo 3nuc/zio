@@ -11,6 +11,8 @@
 </template>
 
 <script setup lang="ts">
+export { default as VkInput } from "@/components/VkInput.vue";
+export { default as VkButton } from "@/components/VkButton.vue";
 import { ref } from "vue";
 import { useUserStore } from "../store";
 const userStore = useUserStore();

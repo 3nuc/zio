@@ -5,8 +5,8 @@ import { router } from "@/utils/router";
 import { i18n } from "@/utils/i18n/i18n";
 import { store } from "@/utils/store";
 
-import VkInput from "@/atoms/VkInput.vue";
-import VkButton from "@/atoms/VkButton.vue";
+import VkInput from "@/components/VkInput.vue";
+import VkButton from "@/components/VkButton.vue";
 
 const app = createApp(App);
 

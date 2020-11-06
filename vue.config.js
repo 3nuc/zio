@@ -18,6 +18,13 @@ module.exports = {
     //fix CORS errors for dev server socket (removing this will break hot reloading)
     host: "localhost",
   },
+  css: {
+    loaderOptions: {
+      scss: {
+        additionalData: `@import "~@/style/index.scss";`,
+      },
+    },
+  },
   configureWebpack: {
     /**
      * Source maps are NOT enabled by default

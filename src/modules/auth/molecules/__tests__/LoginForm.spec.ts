@@ -3,7 +3,7 @@ import { customizer, MountingOptions } from "@/../tests/unit/utilities";
 import _ from "lodash";
 
 import LoginForm from "@/modules/auth/molecules/LoginForm.vue";
-// import VkInput from "@/atoms/VkInput.vue";
+// import VkInput from "@/components/VkInput.vue";
 const component = LoginForm;
 
 function createWrapper(options: MountingOptions) {

@@ -10,10 +10,9 @@ export const authRoutes: RouteRecordRaw[] = [
       {
         path: "signin-callback",
         component: {
-          setup() {
-            console.log("setup");
-            authService.afterLogin();
-          },
+          // setup() {
+          //   authService.afterLogin();
+          // },
         },
       },
     ],
