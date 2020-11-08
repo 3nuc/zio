@@ -1,9 +1,11 @@
 <template>
   <header class="header-layout">
     <nav>
-      <template v-for="{ text, to } in headerButtons" :key="text">
-        <router-link v-slot="{ navigate }" :to="to">
-          <HeaderButton v-text="text" @click="navigate" />
+      <template v-for="{ text, to, icon } in headerButtons" :key="text">
+        <router-link v-slot="{ navigate, isActive }" :to="to">
+          <HeaderButton @click="navigate" :active="isActive">
+            <FaIcon :icon="icon"></FaIcon> {{ text }}
+          </HeaderButton>
         </router-link>
       </template>
     </nav>
@@ -18,10 +20,10 @@ export { default as HeaderButton } from "@/modules/homepage/atoms/HeaderButton.v
 import { computed } from "vue";
 
 export const headerButtons = computed(() => [
-  { text: "Pracownicy", to: "employees" },
-  { text: "Szkolenia", to: "trainings" },
-  { text: "Kandydaci", to: "candidates" },
-  { text: "Projekty", to: "/home/projects" },
+  { text: "Pracownicy", to: "employees", icon: ["far", "address-card"] },
+  { text: "Szkolenia", to: "trainings", icon: ["far", "lightbulb"] },
+  { text: "Kandydaci", to: "candidates", icon: ["far", "grin-stars"] },
+  { text: "Projekty", to: "/home/projects", icon: ["far", "handshake"] },
 ]);
 </script>
 

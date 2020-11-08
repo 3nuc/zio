@@ -1,26 +1,36 @@
 <template>
   <main class="projects-layout">
     <VkButton class="add-project">Dodaj nowy projekt</VkButton>
-    <ProjectsTable :items="tableItems" />
+    <ProjectsTable
+      :items="tableItems ?? []"
+      v-if="componentStatus === 'loaded'"
+    />
   </main>
 </template>
 
-<script setup lang="ts">
-export { default as VkButton } from "@/components/VkButton.vue";
-export { default as ProjectsTable } from "@/modules/projects/molecules/ProjectsTable.vue";
-import { computed } from "vue";
-
-export const tableItems = computed(() => [
-  {
-    id: "123",
-    name: "Skoczna w Villingen",
-    client: { name: "Adam Małysz" },
-    projectManager: { name: "Jane Ahonen" },
-    memberCount: 15,
-    startDate: new Date(Date.now() - 1_000_000),
-    endDate: new Date(Date.now() + 1_000_000),
+<script lang="ts">
+import { apiRoot } from "@/utils/api-root";
+import { defineComponent, computed } from "vue";
+import { Project } from "@/mock-server";
+import ProjectsTable from "@/modules/projects/molecules/ProjectsTable.vue";
+import { useRequest } from "@/composables";
+export default defineComponent({
+  setup() {
+    const getProjects = () => apiRoot.get("projects").json<Project[]>();
+    const { data, isLoading } = useRequest(getProjects());
+    const componentStatus = computed(() =>
+      isLoading.value ? "loading" : "loaded"
+    );
+    return {
+      tableItems: data,
+      isLoading,
+      componentStatus,
+    };
   },
-]);
+  components: {
+    ProjectsTable,
+  },
+});
 </script>
 
 <style scoped lang="scss">
