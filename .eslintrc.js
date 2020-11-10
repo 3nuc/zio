@@ -20,6 +20,7 @@ module.exports = {
     "vue/valid-v-model": "off",
     "vue/no-template-key": "off",
     "vue/valid-v-for": "off",
+    "vue/no-v-model-argument": "off",
     "@typescript-eslint/explicit-module-boundary-types": "off",
   },
   overrides: [

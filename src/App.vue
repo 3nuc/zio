@@ -4,7 +4,11 @@
   </div>
 </template>
 
-<script setup="props" lang="ts"></script>
+<script lang="ts">
+export default {
+  name: "StaryCzaiszMozeszDodacSwojAppName",
+};
+</script>
 
 <style lang="scss">
 body {

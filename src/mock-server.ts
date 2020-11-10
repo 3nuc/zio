@@ -10,19 +10,31 @@ export interface Project {
   endDate: Date;
 }
 
+export interface Employee {
+  id: string;
+  lastName: string;
+  firstName: string;
+  workTitle: string;
+}
+
 export function makeServer() {
   const server = createServer({
     seeds(server) {
       server.db.loadData({
         projects,
+        employees,
       });
     },
     routes() {
       this.get("/api/projects", (schema) => schema.db.projects);
-      this.get("/api/project/:id", (schema, request) => {
-        const { id } = request.params;
-        return schema.db.projects.find(id);
-      });
+      this.get("/api/project/:id", (schema, request) =>
+        schema.db.projects.find(request.params.id)
+      );
+
+      this.get("/api/employees", (schema) => schema.db.employees);
+      this.get("/api/employee/:id", (schema, request) =>
+        schema.db.employees.find(request.params.id)
+      );
     },
   });
   return server;
@@ -46,5 +58,38 @@ const projects: Project[] = [
     memberCount: 7,
     startDate: new Date(Date.now() - 1_000_000),
     endDate: new Date(Date.now() + 1_000_000),
+  },
+];
+
+const employees: Employee[] = [
+  {
+    id: "0",
+    firstName: "Janusz",
+    lastName: "Laskowski",
+    workTitle: "Mąż stanu",
+  },
+  {
+    id: "1",
+    firstName: "Adam",
+    lastName: "Cozack",
+    workTitle: "QA Specialist",
+  },
+  {
+    id: "2",
+    firstName: "John",
+    lastName: "Braun",
+    workTitle: "Frontend Developer",
+  },
+  {
+    id: "3",
+    firstName: "Adam",
+    lastName: "Małysz",
+    workTitle: "Skoczek narciarski",
+  },
+  {
+    id: "4",
+    firstName: "Janusz",
+    lastName: "Laskowski",
+    workTitle: "Mąż stanu",
   },
 ];

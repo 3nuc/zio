@@ -1,13 +1,16 @@
 <template>
   <header class="header-layout">
     <nav>
-      <template v-for="{ text, to, icon } in headerButtons" :key="text">
-        <router-link v-slot="{ navigate, isActive }" :to="to">
-          <HeaderButton @click="navigate" :active="isActive">
-            <FaIcon :icon="icon"></FaIcon> {{ text }}
-          </HeaderButton>
-        </router-link>
-      </template>
+      <router-link
+        v-slot="{ navigate, isActive }"
+        :to="to"
+        v-for="{ text, to, icon } in headerButtons"
+        :key="text"
+      >
+        <HeaderButton @click="navigate" :active="isActive">
+          <FaIcon :icon="icon"></FaIcon> {{ text }}
+        </HeaderButton>
+      </router-link>
     </nav>
     <caption class="right">
       <slot name="right" />

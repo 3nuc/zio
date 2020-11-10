@@ -16,19 +16,6 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
-.active {
-  background-color: $color-primary;
-  color: $color-secondary-25;
-  cursor: default;
-  &:hover {
-    background: $color-primary;
-  }
-  &:before {
-    width: 10px;
-    height: 10px;
-    background: red;
-  }
-}
 .header-button {
   border-radius: $border-radius $border-radius 0 0;
   max-width: 200px;
@@ -40,5 +27,14 @@ export default defineComponent({
     background: $color-primary-75;
     color: $color-secondary;
   }
+}
+.active {
+  background-color: $color-primary;
+  color: $color-light;
+  cursor: default;
+  &:hover {
+    background: $color-primary;
+  }
+  text-decoration: underline;
 }
 </style>
