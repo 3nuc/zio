@@ -1,4 +1,5 @@
 import { computed, onMounted, ref, UnwrapRef } from "vue";
+import VkLoader from "@/components/VkLoader.vue";
 
 export const useRequest = <T>(promise: Promise<T>) => {
   const data = ref<T | null>(null);
@@ -17,5 +18,6 @@ export const useRequest = <T>(promise: Promise<T>) => {
     data,
     isLoading,
     isErrored,
+    VkLoader,
   };
 };

@@ -12,7 +12,6 @@
 
 <script setup lang="ts">
 export { default as HomepageHeader } from "../molecules/HomepageHeader.vue";
-export { default as HomepageFooter } from "../molecules/HomepageFooter.vue";
 </script>
 
 <style scoped lang="scss">

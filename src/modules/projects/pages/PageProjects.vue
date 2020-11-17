@@ -1,34 +1,29 @@
 <template>
   <main class="projects-layout">
     <VkButton class="add-project">Dodaj nowy projekt</VkButton>
-    <ProjectsTable
-      :items="tableItems ?? []"
-      v-if="componentStatus === 'loaded'"
-    />
+    <VkLoader :loading="isLoading">
+      <ProjectsTable :items="tableItems" />
+    </VkLoader>
   </main>
 </template>
 
 <script lang="ts">
-import { apiRoot } from "@/utils/api-root";
-import { defineComponent, computed } from "vue";
-import { Project } from "@/mock-server";
+import { defineComponent } from "vue";
 import ProjectsTable from "@/modules/projects/molecules/ProjectsTable.vue";
+import { getProjects } from "@/utils/service";
 import { useRequest } from "@/composables";
+import VkLoader from "@/components/VkLoader.vue";
 export default defineComponent({
   setup() {
-    const getProjects = () => apiRoot.get("projects").json<Project[]>();
     const { data, isLoading } = useRequest(getProjects());
-    const componentStatus = computed(() =>
-      isLoading.value ? "loading" : "loaded"
-    );
     return {
       tableItems: data,
       isLoading,
-      componentStatus,
     };
   },
   components: {
     ProjectsTable,
+    VkLoader,
   },
 });
 </script>

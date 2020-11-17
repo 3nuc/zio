@@ -1,22 +1,30 @@
 <template>
   <article>
-    <div v-for="employee in employees">
-      <div>{{ employee.firstName }} {{ employee.lastName }}</div>
-      <div v-text="employee.workTitle" />
-    </div>
+    <EmployeeTile
+      v-for="employee in employees"
+      :key="employee.id"
+      class="tile"
+      :employee="employee"
+    />
   </article>
 </template>
 
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
 import { Employee } from "@/mock-server";
+import EmployeeTile from "@/modules/projects/atoms/EmployeeTile.vue";
 
 export default defineComponent({
+  components: { EmployeeTile },
   props: {
-    employees: Array as PropType<Employee[]>,
+    employees: { type: Array as PropType<Employee[]>, required: true },
   },
-  setup(props) {},
 });
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.tile {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+</style>

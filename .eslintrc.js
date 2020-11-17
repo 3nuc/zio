@@ -21,7 +21,9 @@ module.exports = {
     "vue/no-template-key": "off",
     "vue/valid-v-for": "off",
     "vue/no-v-model-argument": "off",
+    "vue/no-multiple-template-root": "off",
     "@typescript-eslint/explicit-module-boundary-types": "off",
+    "vue/no-unused-vars": "warn",
   },
   overrides: [
     {

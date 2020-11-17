@@ -1,0 +1,6 @@
+@mixin clickable {
+  cursor: pointer; 
+  border-radius: $border-radius;
+  filter: drop-shadow(1px 1px 1px $color-secondary-75);
+  background-color: $color-light;
+}

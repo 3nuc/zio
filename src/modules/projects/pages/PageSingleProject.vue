@@ -1,48 +1,57 @@
 <template>
-  <div v-if="data">
-    <header class="header">
-      <h1 v-text="data.name" />
-      <nav>
-        <VkButton v-text="'Usuń projekt'" />
-        <VkButton v-text="'Edytuj projekt'" />
-      </nav>
-    </header>
-    <main>
-      Lista czlonkow todo
-      <content>
-        <div v-text="data.client.name" />
-        <div>{{ data.startDate }} - {{ data.endDate }}</div>
-        <div v-text="data.projectManager.name" />
+  <div v-if="project">
+    <main class="split">
+      <content class="split__1">
+        <header class="header">
+          <h1 v-text="project.name" />
+        </header>
+        <div v-text="project.client.name" />
+        <div>{{ project.startDate }} - {{ project.endDate }}</div>
+        <div v-text="project.projectManager.name" />
       </content>
-      <content>
-        <div></div>
+      <content class="split__2">
+        <nav class="edit-buttons">
+          <VkButton v-text="'Usuń projekt'" />
+          <VkButton v-text="'Edytuj projekt'" />
+        </nav>
+        <VkLoader :loading="areEmployeesLoading">
+          <EmployeesTable :employees="employees" />
+        </VkLoader>
       </content>
     </main>
   </div>
 </template>
 
 <script lang="ts">
-import { apiRoot } from "@/utils/api-root";
 import { defineComponent } from "vue";
 import { useRoute } from "vue-router";
-import { Project } from "@/mock-server";
 import { useRequest } from "@/composables";
+import VkLoader from "@/components/VkLoader.vue";
+import EmployeesTable from "../molecules/EmployeesTable.vue";
+import { getSingleProject, getEmployees } from "@/utils/service";
 
 export default defineComponent({
   setup() {
     const router = useRoute();
 
-    const getSingleProject = (id: string) =>
-      apiRoot.get(`project/${id}`).json<Project>();
-
-    const { data, isLoading } = useRequest(
+    const { data: project, isLoading: isProjectLoading } = useRequest(
       getSingleProject(router.params.id as string)
     );
 
+    const { data: employees, isLoading: areEmployeesLoading } = useRequest(
+      getEmployees()
+    );
+
     return {
-      data,
-      isLoading,
+      project,
+      isProjectLoading,
+      employees,
+      areEmployeesLoading,
     };
+  },
+  components: {
+    VkLoader,
+    EmployeesTable,
   },
 });
 </script>
@@ -56,5 +65,24 @@ export default defineComponent({
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+}
+.split {
+  margin: {
+    right: 50px;
+  }
+  display: grid;
+  grid-template-columns: repeat(2, 50%);
+  row-gap: 100px;
+  &__2 {
+    display: flex;
+    flex-direction: column;
+  }
+}
+.edit-buttons {
+  * {
+    margin-left: 5px;
+  }
+  display: flex;
+  justify-content: flex-end;
 }
 </style>

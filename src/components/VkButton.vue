@@ -8,7 +8,8 @@ export { default as VkBaseButton } from "@/components/VkBaseButton.vue";
 
 <style scoped lang="scss">
 .vk-button {
-  border-radius: $border-radius;
-  filter: drop-shadow(1px 1px 1px $color-secondary-75);
+  @include clickable;
+  max-width: 150px;
+  max-height: 70px;
 }
 </style>
