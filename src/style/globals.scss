@@ -1,0 +1,17 @@
+label {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  color: $color-secondary-25;
+  margin: {
+    top: $spacing-small;
+    bottom: $spacing-small;
+  }  
+  width: #{$spacing-small*70};
+}
+
+select {
+ @include clickable; 
+}
+input {
+ @include clickable; 
+}

@@ -23,9 +23,9 @@ export { default as HeaderButton } from "@/modules/homepage/atoms/HeaderButton.v
 import { computed } from "vue";
 
 export const headerButtons = computed(() => [
-  { text: "Pracownicy", to: "employees", icon: ["far", "address-card"] },
-  { text: "Szkolenia", to: "trainings", icon: ["far", "lightbulb"] },
-  { text: "Kandydaci", to: "candidates", icon: ["far", "grin-stars"] },
+  { text: "Pracownicy", to: "/home/employees", icon: ["far", "address-card"] },
+  { text: "Szkolenia", to: "/home/trainings", icon: ["far", "lightbulb"] },
+  { text: "Kandydaci", to: "/home/candidates", icon: ["far", "grin-stars"] },
   { text: "Projekty", to: "/home/projects", icon: ["far", "handshake"] },
 ]);
 </script>

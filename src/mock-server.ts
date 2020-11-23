@@ -17,12 +17,20 @@ export interface Employee {
   workTitle: string;
 }
 
+export interface Training {
+  id: string;
+  nazwa: string;
+  data_szkolenia: Date;
+  rodzaj_szkolenia: number; // category id
+}
+
 export function makeServer() {
   const server = createServer({
     seeds(server) {
       server.db.loadData({
         projects,
         employees,
+        trainings,
       });
     },
     routes() {
@@ -34,6 +42,10 @@ export function makeServer() {
       this.get("/api/employees", (schema) => schema.db.employees);
       this.get("/api/employee/:id", (schema, request) =>
         schema.db.employees.find(request.params.id)
+      );
+      this.get("/api/trainings", (schema) => schema.db.trainings);
+      this.get("/api/trainings/:id", (schema, request) =>
+        schema.db.trainings.find(request.params.id)
       );
     },
   });
@@ -63,12 +75,6 @@ const projects: Project[] = [
 
 const employees: Employee[] = [
   {
-    id: "0",
-    firstName: "Janusz",
-    lastName: "Laskowski",
-    workTitle: "Mąż stanu",
-  },
-  {
     id: "1",
     firstName: "Adam",
     lastName: "Cozack",
@@ -91,5 +97,44 @@ const employees: Employee[] = [
     firstName: "Janusz",
     lastName: "Laskowski",
     workTitle: "Mąż stanu",
+  },
+];
+
+const trainings: Training[] = [
+  {
+    data_szkolenia: new Date(),
+    id: "0",
+    nazwa: "Legacy code w Sitecore i ASPX",
+    rodzaj_szkolenia: 0,
+  },
+  {
+    data_szkolenia: new Date(),
+    id: "1",
+    nazwa: "Legacy code w Sitecore i ASPX",
+    rodzaj_szkolenia: 0,
+  },
+  {
+    data_szkolenia: new Date(),
+    id: "2",
+    nazwa: "Legacy code w Sitecore i ASPX",
+    rodzaj_szkolenia: 0,
+  },
+  {
+    data_szkolenia: new Date(),
+    id: "3",
+    nazwa: "Legacy code w Sitecore i ASPX",
+    rodzaj_szkolenia: 0,
+  },
+  {
+    data_szkolenia: new Date(),
+    id: "4",
+    nazwa: "Legacy code w Sitecore i ASPX",
+    rodzaj_szkolenia: 0,
+  },
+  {
+    data_szkolenia: new Date(),
+    id: "5",
+    nazwa: "Legacy code w Sitecore i ASPX",
+    rodzaj_szkolenia: 0,
   },
 ];

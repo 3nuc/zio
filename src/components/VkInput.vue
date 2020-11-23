@@ -2,4 +2,4 @@
   <input />
 </template>
 
-<script setup="props, ctx" lang="ts"></script>
+<script lang="ts"></script>

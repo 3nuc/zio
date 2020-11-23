@@ -1,6 +1,10 @@
 <template>
   <main class="projects-layout">
-    <VkButton class="add-project">Dodaj nowy projekt</VkButton>
+    <VkButton class="add-project"
+      ><router-link :to="{ name: 'AddProject' }"
+        >Dodaj nowy projekt</router-link
+      ></VkButton
+    >
     <VkLoader :loading="isLoading">
       <ProjectsTable :items="tableItems" />
     </VkLoader>

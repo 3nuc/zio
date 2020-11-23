@@ -1,25 +1,32 @@
-<template>hello</template>
+<template>
+  <VkLoader :loading="isEmployeeLoading">
+    <img src="https://www.placehold.it/100/100" />
+    <h1 v-text="`${employee.firstName} ${employee.lastName}`" />
+    <h3 v-text="`${employee.workTitle}`" />
+  </VkLoader>
+</template>
 
 <script lang="ts">
 import { getSingleEmployee } from "@/utils/service";
 import { useRequest } from "@/composables";
 import { defineComponent } from "vue";
 import { useRoute } from "vue-router";
+import VkLoader from "@/components/VkLoader.vue";
 
 export default defineComponent({
   setup() {
-    const {
-      params: { id },
-    } = useRoute();
-    const { data, isLoading: isEmployeeLoading, VkLoader } = useRequest(
-      getSingleEmployee(id as string)
+    const { params } = useRoute();
+    const { data: employee, isLoading: isEmployeeLoading } = useRequest(
+      getSingleEmployee(params.id as string)
     );
 
     return {
-      data,
+      employee,
       isEmployeeLoading,
-      VkLoader,
     };
+  },
+  components: {
+    VkLoader,
   },
 });
 </script>

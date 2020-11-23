@@ -15,7 +15,7 @@
           <VkButton v-text="'Edytuj projekt'" />
         </nav>
         <VkLoader :loading="areEmployeesLoading">
-          <EmployeesTable :employees="employees" />
+          <EmployeeTileList :employees="employees" />
         </VkLoader>
       </content>
     </main>
@@ -27,8 +27,8 @@ import { defineComponent } from "vue";
 import { useRoute } from "vue-router";
 import { useRequest } from "@/composables";
 import VkLoader from "@/components/VkLoader.vue";
-import EmployeesTable from "../molecules/EmployeesTable.vue";
 import { getSingleProject, getEmployees } from "@/utils/service";
+import EmployeeTileList from "@/modules/employee/molecules/EmployeeTileList.vue";
 
 export default defineComponent({
   setup() {
@@ -51,7 +51,7 @@ export default defineComponent({
   },
   components: {
     VkLoader,
-    EmployeesTable,
+    EmployeeTileList,
   },
 });
 </script>

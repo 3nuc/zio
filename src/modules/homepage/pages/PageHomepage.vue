@@ -11,6 +11,7 @@
 </template>
 
 <script setup lang="ts">
+export {default as HomepageFooter } from "@/modules/homepage/molecules/HomepageFooter.vue";
 export { default as HomepageHeader } from "../molecules/HomepageHeader.vue";
 </script>
 
@@ -23,6 +24,6 @@ export { default as HomepageHeader } from "../molecules/HomepageHeader.vue";
 }
 .content {
   margin-top: $spacing-large;
-  height: 100%;
+  height: 70vh;
 }
 </style>

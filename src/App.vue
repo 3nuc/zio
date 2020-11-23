@@ -13,5 +13,8 @@ export default {
 <style lang="scss">
 body {
   font-family: "Roboto", sans-serif !important;
+  *|*:link {
+    color: $color-secondary-25;
+  }
 }
 </style>
