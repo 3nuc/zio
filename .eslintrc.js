@@ -24,6 +24,8 @@ module.exports = {
     "vue/no-multiple-template-root": "off",
     "@typescript-eslint/explicit-module-boundary-types": "off",
     "vue/no-unused-vars": "warn",
+    "vue/no-unused-components": "warn",
+    "@typescript-eslint/no-unused-vars": "warn",
   },
   overrides: [
     {

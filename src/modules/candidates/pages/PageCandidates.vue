@@ -1,15 +1,16 @@
 <template>
   <VkLoader :loading="areEmployeesLoading">
-    <Button class="p-button-success" @click="$router.push({ path: '/home/employees/add' })">Dodaj pracownika</Button>
+    <Button class="p-button-success" @click="$router.push({ path: '/home/candidates/add' })">Dodaj kandydata</Button>
     <employee-tile-list :employees="employees" />
   </VkLoader>
 </template>
 
 <script lang="ts">
-import VkLoader from "@/components/VkLoader.vue";
 import { useRequest } from "@/composables";
 import { getEmployees } from "@/utils/service";
 import { defineComponent } from "vue";
+
+import VkLoader from "@/components/VkLoader.vue";
 import EmployeeTileList from "@/modules/employee/molecules/EmployeeTileList.vue";
 export default defineComponent({
   setup() {

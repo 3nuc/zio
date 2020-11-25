@@ -1,19 +1,16 @@
 <template>
   <!-- eslint-disable-next-line vue/no-multiple-template-root -->
-  <template v-if="loading">
-    <div class="wrapper">
-      <div class="spinner spinner1" />
-      <div class="spinner spinner2" />
-    </div>
-  </template>
+  <ProgressSpinner v-if="loading" />
   <!-- eslint-disable-next-line vue/no-multiple-template-root -->
   <slot v-else />
 </template>
 
 <script lang="ts">
 import { computed, defineComponent } from "vue";
+import ProgressSpinner from "primevue/progressspinner";
 
 export default defineComponent({
+  components: { ProgressSpinner },
   props: {
     loading: { type: Boolean, default: true },
     size: {

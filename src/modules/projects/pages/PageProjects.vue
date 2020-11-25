@@ -1,11 +1,7 @@
 <template>
   <main class="projects-layout">
-    <VkButton class="add-project"
-      ><router-link :to="{ name: 'AddProject' }"
-        >Dodaj nowy projekt</router-link
-      ></VkButton
-    >
     <VkLoader :loading="isLoading">
+      <Button class="add-project p-button-success" @click="$router.push({ name: 'AddProject' })">Dodaj projekt</Button>
       <ProjectsTable :items="tableItems" />
     </VkLoader>
   </main>

@@ -10,11 +10,28 @@ export interface Project {
   endDate: Date;
 }
 
+export interface ProjectProper {
+  id_projekt: number;
+  nazwa: string;
+  /**
+   * id
+   */
+  kategoria_projektu: number;
+}
+
 export interface Employee {
   id: string;
   lastName: string;
   firstName: string;
   workTitle: string;
+}
+
+export interface EmployeeProper {
+  id: string;
+  imie: string;
+  nazwisko: string;
+  typ_konta: number;
+  stanowisko: number;
 }
 
 export interface Training {
@@ -24,6 +41,16 @@ export interface Training {
   rodzaj_szkolenia: number; // category id
 }
 
+export interface Candidate {
+  id: number;
+  imie: string;
+  nazwisko: string;
+  /**
+   * id
+   */
+  stanowisko: number;
+  nazwa_pliku_CV: string;
+}
 export function makeServer() {
   const server = createServer({
     seeds(server) {
@@ -35,18 +62,12 @@ export function makeServer() {
     },
     routes() {
       this.get("/api/projects", (schema) => schema.db.projects);
-      this.get("/api/project/:id", (schema, request) =>
-        schema.db.projects.find(request.params.id)
-      );
+      this.get("/api/project/:id", (schema, request) => schema.db.projects.find(request.params.id));
 
       this.get("/api/employees", (schema) => schema.db.employees);
-      this.get("/api/employee/:id", (schema, request) =>
-        schema.db.employees.find(request.params.id)
-      );
+      this.get("/api/employee/:id", (schema, request) => schema.db.employees.find(request.params.id));
       this.get("/api/trainings", (schema) => schema.db.trainings);
-      this.get("/api/trainings/:id", (schema, request) =>
-        schema.db.trainings.find(request.params.id)
-      );
+      this.get("/api/trainings/:id", (schema, request) => schema.db.trainings.find(request.params.id));
     },
   });
   return server;
