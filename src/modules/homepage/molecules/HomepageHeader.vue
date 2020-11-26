@@ -1,14 +1,10 @@
 <template>
   <header class="header-layout">
     <nav>
-      <router-link
-        v-slot="{ navigate, isActive }"
-        :to="to"
-        v-for="{ text, to, icon } in headerButtons"
-        :key="text"
-      >
+      <router-link v-slot="{ navigate, isActive }" :to="to" v-for="{ text, to, icon } in headerButtons" :key="text">
         <HeaderButton @click="navigate" :active="isActive">
-          <FaIcon :icon="icon"></FaIcon> {{ text }}
+          <FaIcon :icon="icon"></FaIcon>
+          {{ text }}
         </HeaderButton>
       </router-link>
     </nav>
@@ -21,7 +17,6 @@
 <script setup lang="ts">
 export { default as HeaderButton } from "@/modules/homepage/atoms/HeaderButton.vue";
 import { computed } from "vue";
-
 export const headerButtons = computed(() => [
   { text: "Pracownicy", to: "/home/employees", icon: ["far", "address-card"] },
   { text: "Szkolenia", to: "/home/trainings", icon: ["far", "lightbulb"] },

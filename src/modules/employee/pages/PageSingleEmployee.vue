@@ -1,12 +1,13 @@
 <template>
-  <VkLoader :loading="isEmployeeLoading">
+  <VkLoader :loading="employee !== null">
+    <img src="https://www.placehold.it/100/100" />
     <template v-if="isEditing">
-      <div class="p-field"><InputText v-model="edit.nazwa" placeholder="Nazwa szkolenia" /></div>
-      <div class="p-field"><Calendar v-model="edit.data_szkolenia" placeholder="Data szkolenia" /></div>
-      <div class="p-field"><Dropdown v-model="edit.rodzaj_szkolenia" placeholder="" /></div>
+      <div class="p-field"><InputText v-model="edit.imie" placeholder="Imie" /></div>
+      <div class="p-field"><InputText v-model="edit.nazwisko" placeholder="Nazwisko" /></div>
+      <div class="p-field"><Dropdown v-model="edit.stanowisko" placeholder="Stanowisko" /></div>
+      <div class="p-field"><Dropdown v-model="edit.typ_konta" placeholder="Typ konta" /></div>
     </template>
     <template v-else>
-      <img src="https://www.placehold.it/100/100" />
       <h1 v-text="`${employee.firstName} ${employee.lastName}`" />
       <h3 v-text="`${employee.workTitle}`" />
     </template>
@@ -20,9 +21,10 @@
 <script lang="ts">
 import { getSingleEmployee } from "@/utils/service";
 import { useRequest } from "@/composables";
-import { defineComponent, ref } from "vue";
+import { defineComponent, reactive, ref } from "vue";
 import { useRoute } from "vue-router";
 import VkLoader from "@/components/VkLoader.vue";
+import { EmployeeProper } from "@/mock-server";
 
 export default defineComponent({
   setup() {
@@ -33,6 +35,7 @@ export default defineComponent({
       employee,
       isEmployeeLoading,
       isEditing: ref(false),
+      edit: reactive<Omit<EmployeeProper, "id">>({ imie: "", nazwisko: "", stanowisko: 0, typ_konta: 0 }),
     };
   },
   components: {

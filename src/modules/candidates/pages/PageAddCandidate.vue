@@ -13,30 +13,33 @@
       <span>Wyślij plik CV:</span>
       <Upload mode="basic" />
     </div>
-    <Button class="p-button-success">Dodaj kandydata</Button>
+    <Button class="p-button-success" :disabled="!isAllFilled">Dodaj kandydata</Button>
   </form>
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, computed } from "vue";
+import { defineComponent, reactive } from "vue";
 import { Candidate } from "@/mock-server";
+import { PartialNull } from "@/utils/types";
+import { useAllFilled } from "@/composables";
 export default defineComponent({
   setup() {
-    const form = reactive<Omit<Candidate, "id">>({
-      imie: "",
-      nazwisko: "",
-      stanowisko: 0,
-      nazwa_pliku_CV: "",
+    const form = reactive<PartialNull<Omit<Candidate, "id">>>({
+      imie: null,
+      nazwisko: null,
+      stanowisko: null,
+      nazwa_pliku_CV: null,
     });
-
-    const positions = computed(() => [
+    const { isAllFilled } = useAllFilled(form);
+    const positions = [
       { key: 0, label: "Frontend Developer" },
       { key: 1, label: "QA Engineer" },
       { key: 2, label: "Backend developer" },
-    ]);
+    ];
 
     return {
       form,
+      isAllFilled,
       positions,
     };
   },

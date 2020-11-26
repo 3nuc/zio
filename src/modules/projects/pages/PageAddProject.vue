@@ -22,7 +22,7 @@
         filter
       />
     </div>
-    <Button class="p-button-success">Dodaj projekt</Button>
+    <Button class="p-button-success" :disabled="!isFormValid">Dodaj projekt</Button>
   </form>
 </template>
 
@@ -30,12 +30,13 @@
 import { defineComponent, reactive, computed, ref } from "vue";
 import { useRequest } from "@/composables";
 import { getEmployees } from "@/utils/service";
-import { Employee } from "@/mock-server";
+import { Employee, ProjectProper } from "@/mock-server";
 
 import InputText from "primevue/inputtext";
 import Listbox from "primevue/listbox";
 import Dropdown from "primevue/dropdown";
 import Button from "primevue/button";
+import { PartialNull } from "@/utils/types";
 
 export default defineComponent({
   components: {
@@ -45,11 +46,14 @@ export default defineComponent({
     Listbox,
   },
   setup() {
-    const form = reactive({
+    const form = reactive<PartialNull<Omit<ProjectProper, "id_projekt"> & { pracownicy: Employee[] }>>({
       nazwa: null,
-      kategoria_projektu: 1,
-      pracownicy: [] as Employee[],
+      kategoria_projektu: null,
+      pracownicy: null,
     });
+    const isFormValid = computed(
+      () => ![null, ""].includes(form.nazwa) && form.kategoria_projektu !== null && (form.pracownicy?.length ?? 0) > 0
+    );
     const categories = computed(() => [
       { key: 1, label: "Kategoria 1" },
       { key: 2, label: "Kategoria 2" },
@@ -59,11 +63,11 @@ export default defineComponent({
     const currentEmployee = ref<string | null>("0");
 
     const onEmployeeChange = (event: { target: HTMLSelectElement }) => {
-      const isAlreadyAdded = form.pracownicy.some((pracownik) => pracownik.id === event.target.value);
+      const isAlreadyAdded = form.pracownicy?.some((pracownik) => pracownik.id === event.target.value) ?? false;
       if (isAlreadyAdded) return;
       currentEmployee.value = null;
       const employeeToAdd = employees.value?.find((e) => e.id === event.target.value);
-      if (employeeToAdd !== undefined) form.pracownicy.push(employeeToAdd);
+      if (employeeToAdd !== undefined) form.pracownicy?.push(employeeToAdd);
     };
 
     const onEmployeeDelete = (employeeId: string) => {
@@ -73,6 +77,7 @@ export default defineComponent({
 
     return {
       form,
+      isFormValid,
       categories,
       employees,
       areEmployeesLoading,

@@ -37,7 +37,7 @@ export interface EmployeeProper {
 export interface Training {
   id: string;
   nazwa: string;
-  data_szkolenia: Date;
+  data_szkolenia: string;
   rodzaj_szkolenia: number; // category id
 }
 
@@ -123,37 +123,37 @@ const employees: Employee[] = [
 
 const trainings: Training[] = [
   {
-    data_szkolenia: new Date(),
+    data_szkolenia: new Date().toString(),
     id: "0",
     nazwa: "Legacy code w Sitecore i ASPX",
     rodzaj_szkolenia: 0,
   },
   {
-    data_szkolenia: new Date(),
+    data_szkolenia: new Date().toString(),
     id: "1",
     nazwa: "Legacy code w Sitecore i ASPX",
     rodzaj_szkolenia: 0,
   },
   {
-    data_szkolenia: new Date(),
+    data_szkolenia: new Date().toString(),
     id: "2",
     nazwa: "Legacy code w Sitecore i ASPX",
     rodzaj_szkolenia: 0,
   },
   {
-    data_szkolenia: new Date(),
+    data_szkolenia: new Date().toString(),
     id: "3",
     nazwa: "Legacy code w Sitecore i ASPX",
     rodzaj_szkolenia: 0,
   },
   {
-    data_szkolenia: new Date(),
+    data_szkolenia: new Date().toString(),
     id: "4",
     nazwa: "Legacy code w Sitecore i ASPX",
     rodzaj_szkolenia: 0,
   },
   {
-    data_szkolenia: new Date(),
+    data_szkolenia: new Date().toString(),
     id: "5",
     nazwa: "Legacy code w Sitecore i ASPX",
     rodzaj_szkolenia: 0,

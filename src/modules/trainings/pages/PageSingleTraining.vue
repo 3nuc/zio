@@ -29,7 +29,7 @@ export default defineComponent({
       training,
       isLoading,
       isEditing: ref(false),
-      edit: reactive<Omit<Training, "id">>({ nazwa: "", data_szkolenia: new Date(), rodzaj_szkolenia: 0 }),
+      edit: reactive<Omit<Training, "id">>({ nazwa: "", data_szkolenia: "", rodzaj_szkolenia: 0 }),
     };
   },
   components: {

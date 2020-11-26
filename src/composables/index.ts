@@ -21,3 +21,10 @@ export const useRequest = <T>(promise: Promise<T>) => {
     VkLoader,
   };
 };
+
+export const useAllFilled = <T>(object: T) => {
+  const isAllFilled = computed(() => Object.values(object).every((value) => value !== null && String(value)));
+  return {
+    isAllFilled,
+  };
+};
