@@ -13,7 +13,7 @@
       <span>Wyślij plik CV:</span>
       <Upload mode="basic" />
     </div>
-    <Button class="p-button-success" :disabled="!isAllFilled">Dodaj kandydata</Button>
+    <Button class="p-button-success" @click="onCreate">Dodaj kandydata</Button>
   </form>
 </template>
 
@@ -22,8 +22,11 @@ import { defineComponent, reactive } from "vue";
 import { Candidate } from "@/mock-server";
 import { PartialNull } from "@/utils/types";
 import { useAllFilled } from "@/composables";
+import { addKandydat } from "@/utils/api";
+import { useRouter } from "vue-router";
 export default defineComponent({
   setup() {
+    const router = useRouter();
     const form = reactive<PartialNull<Omit<Candidate, "id">>>({
       imie: null,
       nazwisko: null,
@@ -37,10 +40,17 @@ export default defineComponent({
       { key: 2, label: "Backend developer" },
     ];
 
+    const onCreate = async () => {
+      //@ts-expect-error xdd
+      await addKandydat({ ...form, stanowisko: form.stanowisko.key, nazwa_pliku_CV: "random" });
+      router.push("/home/candidates");
+    };
+
     return {
       form,
       isAllFilled,
       positions,
+      onCreate,
     };
   },
 });

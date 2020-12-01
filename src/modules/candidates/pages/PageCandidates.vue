@@ -12,9 +12,10 @@ import { defineComponent } from "vue";
 
 import VkLoader from "@/components/VkLoader.vue";
 import EmployeeTileList from "@/modules/employee/molecules/EmployeeTileList.vue";
+import { getKandydaci } from "@/utils/api";
 export default defineComponent({
   setup() {
-    const { data: employees, isLoading: areEmployeesLoading } = useRequest(getEmployees());
+    const { data: employees, isLoading: areEmployeesLoading } = useRequest(getKandydaci());
     return {
       employees,
       areEmployeesLoading,

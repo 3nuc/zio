@@ -2,7 +2,7 @@ import { Training } from "@/mock-server";
 import { apiRoot } from "@/utils/api-root";
 
 export function addSzkolenie(szkolenie: Omit<Training, "id">) {
-  return apiRoot.get("szkolenia", { json: szkolenie }).json<Training>();
+  return apiRoot.post("szkolenia", { json: szkolenie }).json<Training>();
 }
 export function getSzkolenie(id: string) {
   return apiRoot.get(`szkolenia/${id}`).json<Training>();
@@ -10,8 +10,8 @@ export function getSzkolenie(id: string) {
 export function getSzkolenia() {
   return apiRoot.get("szkolenia").json<Training[]>();
 }
-export function editSzkolenie(id: string) {
-  return apiRoot.put(`szkolenia/${id}`);
+export function editSzkolenie(id: string, szkolenie: Omit<Training, "id">) {
+  return apiRoot.put(`szkolenia/${id}`, { json: szkolenie });
 }
 export function removeSzkolenie(id: string) {
   return apiRoot.delete(`szkolenia/${id}`);

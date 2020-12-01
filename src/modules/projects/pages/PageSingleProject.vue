@@ -4,7 +4,7 @@
       <content class="split__1">
         <template v-if="isEditing">
           <InputText v-model="edit.nazwa" placeholder="Nazwa projektu" />
-          <Button class="p-button-success">OK</Button>
+          <Button class="p-button-success" @click="onEdit">OK</Button>
         </template>
         <template v-else>
           <header class="header">
@@ -18,7 +18,7 @@
       <content class="split__2">
         <nav class="edit-buttons">
           <ToggleButton class="p-button-warning" v-model="isEditing" off-label="Edytuj" on-label="Anuluj" />
-          <Button class="p-button-danger">Usuń projekt</Button>
+          <Button class="p-button-danger" @click="onDelete">Usuń projekt</Button>
         </nav>
         <VkLoader :loading="areEmployeesLoading">
           <EmployeeTileList :employees="employees" />
@@ -50,10 +50,6 @@ export default defineComponent({
       nazwa: "",
       kategoria_projektu: 0,
     });
-
-    const onEditClick = () => {
-      isEditing.value = !isEditing.value;
-    };
 
     return {
       project,
