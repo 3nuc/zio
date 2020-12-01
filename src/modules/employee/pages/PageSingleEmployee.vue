@@ -1,41 +1,89 @@
 <template>
-  <VkLoader :loading="employee !== null">
+  <VkLoader :loading="isEmployeeLoading && areStanowiskoLoading">
     <img src="https://www.placehold.it/100/100" />
     <template v-if="isEditing">
       <div class="p-field"><InputText v-model="edit.imie" placeholder="Imie" /></div>
       <div class="p-field"><InputText v-model="edit.nazwisko" placeholder="Nazwisko" /></div>
-      <div class="p-field"><Dropdown v-model="edit.stanowisko" placeholder="Stanowisko" /></div>
-      <div class="p-field"><Dropdown v-model="edit.typ_konta" placeholder="Typ konta" /></div>
+      <div class="p-field">
+        <Dropdown
+          v-model="edit.stanowisko"
+          :options="stanowiska"
+          option-key="id"
+          option-label="nazwa"
+          placeholder="Stanowisko"
+        />
+      </div>
+      <div class="p-field">
+        <Dropdown
+          v-model="edit.typ_konta"
+          :options="[
+            { key: 0, name: 'Normal' },
+            { key: 1, name: 'Premium' },
+          ]"
+          option-key="key"
+          option-label="name"
+          placeholder="Typ konta"
+        />
+      </div>
+      <div class="p-field">
+        <Button class="p-button-success" @click="onEdit()">Ok</Button>
+      </div>
     </template>
     <template v-else>
-      <h1 v-text="`${employee.firstName} ${employee.lastName}`" />
-      <h3 v-text="`${employee.workTitle}`" />
+      <h1 v-text="`${employee.imie} ${employee.nazwisko}`" />
+      <h3 v-text="`${stanowisko}`" />
     </template>
     <div class="p-field">
       <ToggleButton v-model="isEditing" class="p-button-warning" on-label="Anuluj" off-label="Edytuj" />
-      <Button class="p-button-danger">Usuń projekt</Button>
+      <Button class="p-button-danger" @click="onDelete()">Usuń pracownika</Button>
     </div>
   </VkLoader>
 </template>
 
 <script lang="ts">
-import { getSingleEmployee } from "@/utils/service";
 import { useRequest } from "@/composables";
-import { defineComponent, reactive, ref } from "vue";
-import { useRoute } from "vue-router";
+import { computed, defineComponent, reactive, ref } from "vue";
+import { useRoute, useRouter } from "vue-router";
 import VkLoader from "@/components/VkLoader.vue";
 import { EmployeeProper } from "@/mock-server";
+import { deletePracownik, editPracownik, getPracownikById, getStanowiska } from "@/utils/api";
 
 export default defineComponent({
   setup() {
     const { params } = useRoute();
-    const { data: employee, isLoading: isEmployeeLoading } = useRequest(getSingleEmployee(params.id as string));
+    const router = useRouter();
+    const { data: employee, isLoading: isEmployeeLoading } = useRequest(getPracownikById(params.id as string));
 
+    const { data: stanowiska, isLoading: areStanowiskoLoading } = useRequest(getStanowiska()); //i love mixing polish and english in code
+    const stanowisko = computed(() => stanowiska.value?.find((st) => st.id === employee.value?.stanowisko)?.dzial);
+
+    const edit = reactive<Omit<EmployeeProper, "id">>({ imie: "", nazwisko: "", stanowisko: 0, typ_konta: 0 });
+    const onEdit = async () => {
+      const pracownik: Omit<EmployeeProper, "id"> = {
+        imie: edit.imie,
+        nazwisko: edit.nazwisko,
+        //@ts-expect-error xdd
+        stanowisko: edit.stanowisko.id,
+        //@ts-expect-error xdd
+        typ_konta: edit.typ_konta.key,
+      };
+      await editPracownik(params.id as string, pracownik);
+      router.push("/home/employees");
+    };
+    const onDelete = async () => {
+      await deletePracownik(params.id as string);
+      router.push("/home/employees");
+    };
     return {
       employee,
+      stanowiska,
+      stanowisko,
       isEmployeeLoading,
+      areStanowiskoLoading,
       isEditing: ref(false),
-      edit: reactive<Omit<EmployeeProper, "id">>({ imie: "", nazwisko: "", stanowisko: 0, typ_konta: 0 }),
+      edit,
+      onEdit,
+      onDelete,
     };
   },
   components: {
