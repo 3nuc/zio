@@ -5,8 +5,8 @@ export interface Stanowisko {
   nazwa: string;
   dzial: string;
 }
-export function getAll() {
-  return apiRoot.get("/stanowisko").json<Stanowisko[]>();
+export function getStanowiska() {
+  return apiRoot.get("stanowisko").json<Stanowisko[]>();
 }
 export function findByDzial(dzial: string) {
   return apiRoot.get(`/stanowisko/dzial/${dzial}`).json<Stanowisko[]>();

@@ -1,13 +1,6 @@
 <template>
-  <router-link
-    :to="{ name: 'SingleEmployee', params: { id: employee.id } }"
-    v-slot="{ href }"
-    class="tile"
-  >
-    <div
-      v-text="`${employee.lastName} ${employee.firstName}`"
-      class="name text"
-    />
+  <router-link :to="{ name: 'SingleEmployee', params: { id: employee.id } }" v-slot="{ href }" class="tile">
+    <div v-text="`${employee.nazwisko} ${employee.imie}`" class="name text" />
     <div v-text="employee.workTitle" class="text" />
   </router-link>
 </template>
