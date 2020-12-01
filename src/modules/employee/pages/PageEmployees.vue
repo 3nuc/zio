@@ -8,12 +8,12 @@
 <script lang="ts">
 import VkLoader from "@/components/VkLoader.vue";
 import { useRequest } from "@/composables";
-import { getEmployees } from "@/utils/service";
 import { defineComponent } from "vue";
 import EmployeeTileList from "@/modules/employee/molecules/EmployeeTileList.vue";
+import { getPracownik } from "@/utils/api";
 export default defineComponent({
   setup() {
-    const { data: employees, isLoading: areEmployeesLoading } = useRequest(getEmployees());
+    const { data: employees, isLoading: areEmployeesLoading } = useRequest(getPracownik());
     return {
       employees,
       areEmployeesLoading,

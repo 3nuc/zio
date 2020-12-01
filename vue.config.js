@@ -3,6 +3,15 @@
  */
 module.exports = {
   devServer: {
+    proxy: {
+      "^/api": {
+        target: "http://localhost:8082",
+        changeOrigin: true,
+        pathRewrite: {
+          "^/api": "/",
+        },
+      },
+    },
     // this is necessary becaue OpenID Connect must redirect to https:// URL eg. after logout
     https: true,
     /**

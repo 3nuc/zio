@@ -23,7 +23,6 @@ import "primeicons/primeicons.css";
 import "primeflex/primeflex.css";
 
 library.add(far);
-makeServer();
 
 const app = createApp(App);
 

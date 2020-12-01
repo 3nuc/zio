@@ -1,11 +1,11 @@
 import { EmployeeProper } from "@/mock-server";
 import { apiRoot } from "@/utils/api-root";
 
-export function getAllEmployees() {
+export function getPracownik() {
   return apiRoot.get("pracownicy").json<EmployeeProper[]>();
 }
 
-export function getEmployee(id: string) {
+export function getPracownikById(id: string) {
   return apiRoot.get(`pracownicy/${id}`).json<EmployeeProper>();
 }
 
