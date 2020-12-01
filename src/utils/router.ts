@@ -12,6 +12,7 @@ import PageTrainings from "@/modules/trainings/pages/PageTrainings.vue";
 import PageSingleTraining from "@/modules/trainings/pages/PageSingleTraining.vue";
 import PageAddProject from "@/modules/projects/pages/PageAddProject.vue";
 import PageAddTraining from "@/modules/trainings/pages/PageAddTraining.vue";
+import PageSingleCandidate from "@/modules/candidates/pages/PageSingleCandidate.vue";
 
 const routes: RouteRecordRaw[] = [
   {
@@ -62,6 +63,7 @@ const routes: RouteRecordRaw[] = [
       },
       { path: "candidates", component: PageCandidates },
       { path: "candidates/add", component: PageAddCandidate },
+      { path: "candidates/:id", component: PageSingleCandidate },
       { path: "projects", component: PageProjects },
       { path: "projects/:id", component: PageSingleProject },
       { path: "projects/add", component: PageAddProject, name: "AddProject" },

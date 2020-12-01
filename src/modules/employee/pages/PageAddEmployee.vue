@@ -18,8 +18,7 @@
       />
     </div>
     <div class="p-field">
-      <label>Wyślij plik CV:</label>
-      <Upload mode="basic" />
+      <InputText v-model="form.nazwa_pliku" placeholder="Nazwa pliku" />
     </div>
     <Button class="p-button-success" @click="onAddEmployee">Dodaj kandydata</Button>
   </form>

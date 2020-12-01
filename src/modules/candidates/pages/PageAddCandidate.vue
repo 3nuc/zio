@@ -7,22 +7,27 @@
       <InputText v-model="form.nazwisko" placeholder="Nazwisko" />
     </div>
     <div class="p-field">
-      <Dropdown v-model="form.stanowisko" :options="positions" option-label="label" placeholder="Stanowisko" />
+      <Dropdown
+        v-model="form.stanowisko"
+        :options="positions"
+        option-label="label"
+        option-key="id"
+        placeholder="Stanowisko"
+      />
     </div>
     <div class="p-field">
-      <span>Wyślij plik CV:</span>
-      <Upload mode="basic" />
+      <InputText v-model="form.nazwa_pliku_CV" placeholder="Nazwa pliku CV" />
     </div>
     <Button class="p-button-success" @click="onCreate">Dodaj kandydata</Button>
   </form>
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from "vue";
+import { defineComponent, onMounted, reactive, ref } from "vue";
 import { Candidate } from "@/mock-server";
 import { PartialNull } from "@/utils/types";
 import { useAllFilled } from "@/composables";
-import { addKandydat } from "@/utils/api";
+import { addKandydat, getStanowiska } from "@/utils/api";
 import { useRouter } from "vue-router";
 export default defineComponent({
   setup() {
@@ -34,15 +39,19 @@ export default defineComponent({
       nazwa_pliku_CV: null,
     });
     const { isAllFilled } = useAllFilled(form);
-    const positions = [
-      { key: 0, label: "Frontend Developer" },
-      { key: 1, label: "QA Engineer" },
-      { key: 2, label: "Backend developer" },
-    ];
+
+    const positions = ref<{ key: number; label: string }[]>([]);
+
+    onMounted(async () => {
+      positions.value = (await getStanowiska()).map(({ id: key, nazwa: label }) => ({
+        key,
+        label,
+      }));
+    });
 
     const onCreate = async () => {
       //@ts-expect-error xdd
-      await addKandydat({ ...form, stanowisko: form.stanowisko.key, nazwa_pliku_CV: "random" });
+      await addKandydat(form);
       router.push("/home/candidates");
     };
 

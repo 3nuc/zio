@@ -18,5 +18,5 @@ export function deleteKandydat(id: string) {
   return apiRoot.delete(`kandydaci/${id}`);
 }
 export function putKandydat(id: string, kandydat: Omit<Candidate, "id">) {
-  return apiRoot.post(`kandydaci/${id}`, { json: kandydat });
+  return apiRoot.put(`kandydaci/${id}`, { json: kandydat });
 }
