@@ -13,11 +13,16 @@ import PageSingleTraining from "@/modules/trainings/pages/PageSingleTraining.vue
 import PageAddProject from "@/modules/projects/pages/PageAddProject.vue";
 import PageAddTraining from "@/modules/trainings/pages/PageAddTraining.vue";
 import PageSingleCandidate from "@/modules/candidates/pages/PageSingleCandidate.vue";
+import LoginForm from "@/modules/auth/molecules/LoginForm.vue";
 
 const routes: RouteRecordRaw[] = [
   {
     path: "/",
     redirect: "/home",
+  },
+  {
+    path: "/login",
+    component: LoginForm,
   },
   {
     path: "/home/",
@@ -75,4 +80,9 @@ const routes: RouteRecordRaw[] = [
 export const router = createRouter({
   routes,
   history: createWebHistory(),
+});
+
+router.beforeEach(async (to, from) => {
+  // const isSessionStillValid =
+  return true;
 });

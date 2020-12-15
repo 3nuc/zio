@@ -15,9 +15,6 @@
         placeholder="Stanowisko"
       />
     </div>
-    <div class="p-field">
-      <InputText v-model="form.nazwa_pliku_CV" placeholder="Nazwa pliku CV" />
-    </div>
     <Button class="p-button-success" @click="onCreate">Dodaj kandydata</Button>
   </form>
 </template>
@@ -32,11 +29,11 @@ import { useRouter } from "vue-router";
 export default defineComponent({
   setup() {
     const router = useRouter();
-    const form = reactive<PartialNull<Omit<Candidate, "id">>>({
+    const form = reactive<any>({
       imie: null,
       nazwisko: null,
       stanowisko: null,
-      nazwa_pliku_CV: null,
+      nazwa_pliku_CV: "plik.pdf",
     });
     const { isAllFilled } = useAllFilled(form);
 
@@ -50,8 +47,11 @@ export default defineComponent({
     });
 
     const onCreate = async () => {
-      //@ts-expect-error xdd
-      await addKandydat(form);
+      await addKandydat({
+        ...form,
+        //@ts-expect-error foobar
+        stanowisko: positions.value.find((x) => form.stanowisko?.key === x.id) ?? undefined,
+      });
       router.push("/home/candidates");
     };
 

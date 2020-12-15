@@ -11,8 +11,8 @@ import InputText from "primevue/inputtext";
 import FileUpload from "primevue/fileupload";
 import Calendar from "primevue/calendar";
 import ToggleButton from "primevue/togglebutton";
+import MultiSelect from "primevue/multiselect";
 
-import { makeServer } from "@/mock-server";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { far } from "@fortawesome/free-regular-svg-icons";
 import { library } from "@fortawesome/fontawesome-svg-core";
@@ -35,6 +35,7 @@ app.component("InputText", InputText);
 app.component("Dropdown", Dropdown);
 app.component("Button", Button);
 app.component("Calendar", Calendar);
+app.component("MultiSelect", MultiSelect);
 app.component("ToggleButton", ToggleButton);
 app.component("FaIcon", FontAwesomeIcon);
 

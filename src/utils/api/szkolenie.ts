@@ -10,8 +10,8 @@ export function getSzkolenie(id: string) {
 export function getSzkolenia() {
   return apiRoot.get("szkolenia").json<Training[]>();
 }
-export function editSzkolenie(id: string, szkolenie: Omit<Training, "id">) {
-  return apiRoot.put(`szkolenia/${id}`, { json: szkolenie });
+export function editSzkolenie(szkolenie: Training) {
+  return apiRoot.put(`szkolenia`, { json: szkolenie });
 }
 export function removeSzkolenie(id: string) {
   return apiRoot.delete(`szkolenia/${id}`);

@@ -1,3 +1,16 @@
-import ky from "ky";
+import { router } from "@/utils/router";
+import ky, { AfterResponseHook, BeforeRequestHook } from "ky";
 
-export const apiRoot = ky.create({ prefixUrl: "https://127.0.0.1:8080/api" });
+const afterResponse: AfterResponseHook = (request, options, response) => {
+  if (response.status === 401) router.push("/login");
+};
+const beforeRequest: BeforeRequestHook = (request) => {
+  const token = localStorage.getItem("token");
+  const header = request.headers.get("Authorization");
+  if (!header?.startsWith("Basic")) request.headers.append("Authorization", `Bearer ${token}`);
+  console.log(token, header, request.headers);
+};
+export const apiRoot = ky.create({
+  prefixUrl: "https://localhost:8080/api",
+  hooks: { afterResponse: [afterResponse], beforeRequest: [beforeRequest] },
+});

@@ -7,18 +7,12 @@
       <InputText v-model="form.nazwisko" placeholder="Nazwisko" />
     </div>
     <div class="p-field">
-      <Dropdown v-model="form.stanowisko" :options="positions" option-label="label" placeholder="Stanowisko" />
-    </div>
-    <div class="p-field">
       <Dropdown
         v-model="form.typ_konta"
         :options="account_types"
         option-label="label"
         placeholder="Kategoria projektu"
       />
-    </div>
-    <div class="p-field">
-      <InputText v-model="form.nazwa_pliku" placeholder="Nazwa pliku" />
     </div>
     <Button class="p-button-success" @click="onAddEmployee">Dodaj kandydata</Button>
   </form>
@@ -47,33 +41,20 @@ export default defineComponent({
         label,
       }));
     });
-    // const positions = computed(() => [
-    //   { key: 0, label: "Frontend Developer" },
-    //   { key: 1, label: "QA Engineer" },
-    //   { key: 2, label: "Backend developer" },
-    // ]);
-
-    //hardcoded
-    const account_types = computed(() => [
-      { key: 0, label: "Normalne" },
-      { key: 1, label: "Premium" },
-    ]);
 
     const onAddEmployee = async () => {
       await addPracownik({
         imie: form.imie,
         nazwisko: form.nazwisko,
         //@ts-expect-error xdd
-        stanowisko: form.stanowisko.key,
-        //@ts-expect-error xdd
-        typ_konta: form.typ_konta.key,
+        stanowisko: positions.value.find((x) => form.stanowisko === x.id),
+        nazwa_pliku: "foo",
       });
       router.push("/home/employees");
     };
     return {
       form,
       positions,
-      account_types,
       onAddEmployee,
     };
   },

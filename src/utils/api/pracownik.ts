@@ -20,3 +20,7 @@ export function deletePracownik(id: string) {
 export function editPracownik(id: string, pracownik: Omit<EmployeeProper, "id">) {
   return apiRoot.put(`pracownicy/${id}`, { json: pracownik });
 }
+
+export function addPracownikToProjekt(idProjektu: number, idPracownika: number) {
+  return apiRoot.put(`projekt/addPracownik/${idProjektu}/${idPracownika}`);
+}

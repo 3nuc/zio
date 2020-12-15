@@ -1,7 +1,7 @@
 <template>
   <form class="p-fluid">
     <div class="p-field">
-      <InputText v-model="form.nazwa" placeholder="Nazwa projektu" />
+      <InputText v-model="form.nazwa" placeholder="Nazwa szkolenia" />
     </div>
     <div class="p-field">
       <Calendar v-model="form.data_szkolenia" placeholder="Wybierz datę" />
@@ -10,7 +10,7 @@
       <Dropdown
         v-model="form.rodzaj_szkolenia"
         :options="training_types"
-        option-label="name"
+        option-label="nazwaSzkKat"
         placeholder="Kategoria projektu"
       />
     </div>
@@ -19,11 +19,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, computed } from "vue";
+import { defineComponent, reactive, computed, ref, onMounted } from "vue";
 import { Training } from "@/mock-server";
 import { PartialNull } from "@/utils/types";
 import { useAllFilled } from "@/composables";
 import { addSzkolenie } from "@/utils/api";
+import { getSzkoleniaKategorie } from "@/utils/api/szkolenie_kat";
 import { useRouter } from "vue-router";
 export default defineComponent({
   setup() {
@@ -34,12 +35,11 @@ export default defineComponent({
       rodzaj_szkolenia: null,
     });
 
-    const training_types = computed(() => [
-      { key: 0, name: "Normalne" },
-      { key: 1, name: "Premium" },
-    ]);
-
+    const training_types = ref<any>(null);
     const { isAllFilled } = useAllFilled(form);
+    onMounted(async () => {
+      training_types.value = await getSzkoleniaKategorie();
+    });
     const onCreate = async () => {
       //@ts-expect-error xdd
       await addSzkolenie({ ...form, rodzaj_szkolenia: form.rodzaj_szkolenia.key });

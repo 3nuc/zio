@@ -1,7 +1,7 @@
 <template>
   <main class="layout">
     <HomepageHeader>
-      <template #right> Witaj Hubert </template>
+      <template #right>Witaj root</template>
     </HomepageHeader>
     <main class="content">
       <router-view />
@@ -11,7 +11,7 @@
 </template>
 
 <script setup lang="ts">
-export {default as HomepageFooter } from "@/modules/homepage/molecules/HomepageFooter.vue";
+export { default as HomepageFooter } from "@/modules/homepage/molecules/HomepageFooter.vue";
 export { default as HomepageHeader } from "../molecules/HomepageHeader.vue";
 </script>
 

@@ -6,30 +6,30 @@
     <div class="p-field">
       <Dropdown
         v-model="form.kategoria_projektu"
-        :options="categories"
-        option-label="label"
+        :options="projectCategories"
+        option-label="nazwaKatProjektu"
         placeholder="Kategoria projektu"
       />
     </div>
     <div class="p-field">
       <label>Wybierz pracowników</label>
       <Listbox
-        :options="employees ?? []"
+        :options="employees_formatted"
         v-model="form.pracownicy"
-        option-label="firstName"
+        option-label="label"
         placeholder="Wybierz pracownika"
         multiple
         filter
       />
     </div>
-    <Button class="p-button-success" :disabled="!isFormValid">Dodaj projekt</Button>
+    <Button class="p-button-success" :disabled="!isFormValid" @click="onAdd">Dodaj projekt</Button>
   </form>
 </template>
 
 <script lang="ts">
 import { defineComponent, reactive, computed, ref } from "vue";
 import { useRequest } from "@/composables";
-import { getEmployees } from "@/utils/service";
+import { addProject, getEmployees, getProjectCategories } from "@/utils/service";
 import { Employee, ProjectProper } from "@/mock-server";
 
 import InputText from "primevue/inputtext";
@@ -37,6 +37,7 @@ import Listbox from "primevue/listbox";
 import Dropdown from "primevue/dropdown";
 import Button from "primevue/button";
 import { PartialNull } from "@/utils/types";
+import { addPracownikToProjekt, getPracownik } from "@/utils/api";
 
 export default defineComponent({
   components: {
@@ -54,12 +55,12 @@ export default defineComponent({
     const isFormValid = computed(
       () => ![null, ""].includes(form.nazwa) && form.kategoria_projektu !== null && (form.pracownicy?.length ?? 0) > 0
     );
-    const categories = computed(() => [
-      { key: 1, label: "Kategoria 1" },
-      { key: 2, label: "Kategoria 2" },
-    ]);
+    const { data: projectCategories } = useRequest(getProjectCategories());
+    const { data: employees, isLoading: areEmployeesLoading } = useRequest(getPracownik());
+    const employees_formatted = computed(() =>
+      (employees?.value ?? []).map((em: any) => ({ ...em, label: `${em.imie} ${em.nazwisko}` }))
+    );
 
-    const { data: employees, isLoading: areEmployeesLoading } = useRequest(getEmployees());
     const currentEmployee = ref<string | null>("0");
 
     const onEmployeeChange = (event: { target: HTMLSelectElement }) => {
@@ -67,7 +68,7 @@ export default defineComponent({
       if (isAlreadyAdded) return;
       currentEmployee.value = null;
       const employeeToAdd = employees.value?.find((e) => e.id === event.target.value);
-      if (employeeToAdd !== undefined) form.pracownicy?.push(employeeToAdd);
+      if (employeeToAdd !== undefined) form.pracownicy?.push(employeeToAdd as any);
     };
 
     const onEmployeeDelete = (employeeId: string) => {
@@ -75,15 +76,26 @@ export default defineComponent({
       employees.value = employees.value.filter((e) => e.id !== employeeId);
     };
 
+    const onAdd = async () => {
+      const project = {
+        nazwa: form.nazwa,
+        kategoriaProjektu: form.kategoria_projektu,
+      };
+      const { idProjekt } = await addProject(project);
+      form.pracownicy!.forEach(async (x: any) => addPracownikToProjekt(idProjekt, x.id));
+    };
+
     return {
       form,
       isFormValid,
-      categories,
+      projectCategories,
       employees,
       areEmployeesLoading,
       currentEmployee,
       onEmployeeChange,
       onEmployeeDelete,
+      employees_formatted,
+      onAdd,
     };
   },
 });

@@ -1,6 +1,5 @@
 <template>
   <VkLoader :loading="isEmployeeLoading && areStanowiskoLoading">
-    <img src="https://www.placehold.it/100/100" />
     <template v-if="isEditing">
       <div class="p-field"><InputText v-model="edit.imie" placeholder="Imie" /></div>
       <div class="p-field"><InputText v-model="edit.nazwisko" placeholder="Nazwisko" /></div>
@@ -14,28 +13,17 @@
         />
       </div>
       <div class="p-field">
-        <Dropdown
-          v-model="edit.typ_konta"
-          :options="[
-            { key: 0, name: 'Normal' },
-            { key: 1, name: 'Premium' },
-          ]"
-          option-key="key"
-          option-label="name"
-          placeholder="Typ konta"
-        />
-      </div>
-      <div class="p-field">
         <Button class="p-button-success" @click="onEdit()">Ok</Button>
       </div>
     </template>
     <template v-else>
       <h1 v-text="`${employee.imie} ${employee.nazwisko}`" />
-      <h3 v-text="`${stanowisko}`" />
+      <h3 v-text="`${stanowisko ?? ''}`" />
     </template>
     <div class="p-field">
+      <Button class="p-button-success" @click="onEmploy()">Zatrudnij kandydata</Button>
       <ToggleButton v-model="isEditing" class="p-button-warning" on-label="Anuluj" off-label="Edytuj" />
-      <Button class="p-button-danger" @click="onDelete()">Usuń pracownika</Button>
+      <Button class="p-button-danger" @click="onDelete()">Usuń kandydata</Button>
     </div>
   </VkLoader>
 </template>
@@ -63,12 +51,13 @@ export default defineComponent({
         imie: edit.imie,
         nazwisko: edit.nazwisko,
         //@ts-expect-error xdd
-        stanowisko: edit.stanowisko.id,
-        //@ts-expect-error xdd
-        typ_konta: edit.typ_konta.key,
+        stanowisko: stanowiska.value.find((x) => x.key === edit?.stanowisko.id),
       };
       await putKandydat(params.id as string, pracownik);
       router.push("/home/candidates");
+    };
+    const onEmploy = () => {
+      return 0;
     };
     const onDelete = async () => {
       await deleteKandydat(params.id as string);
@@ -84,6 +73,7 @@ export default defineComponent({
       edit,
       onEdit,
       onDelete,
+      onEmploy,
     };
   },
   components: {
