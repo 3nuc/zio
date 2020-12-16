@@ -10,6 +10,6 @@ const beforeRequest: BeforeRequestHook = (request) => {
   if (!header?.startsWith("Basic")) request.headers.append("Authorization", `Bearer ${token}`);
 };
 export const apiRoot = ky.create({
-  prefixUrl: "https://localhost:8080/api",
+  prefixUrl: "/api",
   hooks: { afterResponse: [afterResponse], beforeRequest: [beforeRequest] },
 });

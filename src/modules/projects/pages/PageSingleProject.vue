@@ -93,7 +93,6 @@ export default defineComponent({
     };
 
     return {
-      employeesFormatted,
       onEdit,
       onDelete,
       project,
