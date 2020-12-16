@@ -1,5 +1,8 @@
 <template>
-  <footer>Copyright Spartak Corp. 2020</footer>
+  <footer>
+    Check out
+    <a href="https://github.com/adambajguz/typin">https://github.com/adambajguz/typin</a>
+  </footer>
 </template>
 
 <script setup lang="ts"></script>
