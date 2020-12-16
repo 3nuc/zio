@@ -1,73 +1,121 @@
 <template>
-  <div v-if="project">
-    <main class="split">
-      <content class="split__1">
+  <div v-if="project" class="root">
+    <Toolbar>
+      <template #right>
         <template v-if="isEditing">
-          <InputText v-model="edit.nazwa" placeholder="Nazwa projektu" />
           <Button class="p-button-success" @click="onEdit">OK</Button>
         </template>
-        <template v-else>
+        <ToggleButton class="p-button-warning p-m-r-3" v-model="isEditing" off-label="Edytuj" on-label="Anuluj" />
+        <Button class="p-button-danger" @click="onDelete">Usuń projekt</Button>
+      </template>
+      <template #left>
+        <template v-if="!isEditing">
           <header class="header">
-            <h1 v-text="project.name" />
+            <h1 v-text="project.nazwa" />
           </header>
-          <div v-text="project.client.name" />
-          <div>{{ project.startDate }} - {{ project.endDate }}</div>
-          <div v-text="project.projectManager.name" />
+        </template>
+        <InputText v-else v-model="edit.nazwa" placeholder="Nazwa projektu" />
+      </template>
+    </Toolbar>
+    <main class="split" style="padding-top: 30px">
+      <content class="split__1">
+        <h2>Nazwa kategorii</h2>
+        <Dropdown
+          v-if="isEditing"
+          v-model="edit.kategoria_projektu"
+          :options="categories"
+          option-label="nazwaKatProjektu"
+        />
+        <template v-else>
+          {{ project.kategoriaProjektu?.nazwaKatProjektu }}
         </template>
       </content>
       <content class="split__2">
-        <nav class="edit-buttons">
-          <ToggleButton class="p-button-warning" v-model="isEditing" off-label="Edytuj" on-label="Anuluj" />
-          <Button class="p-button-danger" @click="onDelete">Usuń projekt</Button>
-        </nav>
-        <VkLoader :loading="areEmployeesLoading">
-          <EmployeeTileList :employees="employees" />
-        </VkLoader>
+        <h2>Pracownicy</h2>
+        <template v-if="isEditing">
+          <Listbox
+            :options="employeesFormatted"
+            v-model="edit.employees"
+            option-label="fullName"
+            placeholder="Wybierz pracownika"
+            multiple
+            filter
+          />
+        </template>
+        <template v-else>
+          <div v-if="project.pracownicy?.length ?? 0 === 0">Brak pracownków</div>
+          <EmployeeTileList :employees="project.pracownicy" v-else />
+        </template>
       </content>
     </main>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref } from "vue";
-import { useRoute } from "vue-router";
+import { computed, defineComponent, reactive, ref } from "vue";
+import { useRoute, useRouter } from "vue-router";
 import { useRequest } from "@/composables";
 import VkLoader from "@/components/VkLoader.vue";
-import { getSingleProject, getEmployees } from "@/utils/service";
+import { getSingleProject, getEmployees, getProjectCategories } from "@/utils/service";
 import EmployeeTileList from "@/modules/employee/molecules/EmployeeTileList.vue";
 import { Project, ProjectProper } from "@/mock-server";
+import { getPracownik } from "@/utils/api";
+import { apiRoot } from "@/utils/api-root";
+import Listbox from "primevue/listbox";
 
 export default defineComponent({
   setup() {
-    const router = useRoute();
+    const route = useRoute();
+    const router = useRouter();
 
-    const { data: project, isLoading: isProjectLoading } = useRequest(getSingleProject(router.params.id as string));
-
-    const { data: employees, isLoading: areEmployeesLoading } = useRequest(getEmployees());
+    const { data: project, isLoading: isProjectLoading } = useRequest(getSingleProject(route.params.id as string));
+    const { data: categories } = useRequest(getProjectCategories());
+    const { data: employees } = useRequest(getPracownik());
+    const employeesFormatted = computed(() =>
+      (employees.value ?? []).map((x) => ({ ...x, fullName: `${x.imie} ${x.nazwisko}` }))
+    );
 
     const isEditing = ref(false);
-    const edit = reactive<Omit<ProjectProper, "id_projekt">>({
+    const edit = reactive<any>({
       nazwa: "",
-      kategoria_projektu: 0,
+      //@ts-ignore
+      kategoria_projektu: null,
     });
+    const onEdit = async () => {
+      const json = {};
+      await apiRoot.put(`projekt/${route.params.id}`, { json });
+      router.push("/home/projects");
+    };
+
+    const onDelete = async () => {
+      await apiRoot.delete(`projekt/${route.params.id}`);
+      router.push("/home/projects");
+    };
 
     return {
+      employeesFormatted,
+      onEdit,
+      onDelete,
       project,
       isProjectLoading,
-      employees,
-      areEmployeesLoading,
-      isEditing,
       edit,
+      isEditing,
+      categories,
+      employees,
     };
   },
   components: {
     VkLoader,
+    Listbox,
     EmployeeTileList,
   },
 });
 </script>
 
 <style scoped lang="scss">
+.root {
+  width: 800px;
+}
 .header {
   nav > *:first-of-type {
     margin-right: $spacing-large;

@@ -82,7 +82,8 @@ export default defineComponent({
         kategoriaProjektu: form.kategoria_projektu,
       };
       const { idProjekt } = await addProject(project);
-      form.pracownicy!.forEach(async (x: any) => addPracownikToProjekt(idProjekt, x.id));
+      await new Promise((r) => setTimeout(r, 1000));
+      form.pracownicy!.forEach(async (x: any) => await addPracownikToProjekt(idProjekt, x.id));
     };
 
     return {

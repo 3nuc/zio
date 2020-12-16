@@ -3,7 +3,7 @@
     <router-link :to="`/home/employees/${item.id}`">
       <div class="name">
         <FaIcon :icon="['far', 'address-card']" />
-        {{ item.imie }} {{ item.nazwisko }}
+        {{ item?.imie }} {{ item?.nazwisko }}
       </div>
       <div v-text="item.workTitle" class="title" />
     </router-link>

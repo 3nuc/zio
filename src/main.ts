@@ -12,6 +12,7 @@ import FileUpload from "primevue/fileupload";
 import Calendar from "primevue/calendar";
 import ToggleButton from "primevue/togglebutton";
 import MultiSelect from "primevue/multiselect";
+import Toolbar from "primevue/toolbar";
 
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { far } from "@fortawesome/free-regular-svg-icons";
@@ -37,6 +38,7 @@ app.component("Button", Button);
 app.component("Calendar", Calendar);
 app.component("MultiSelect", MultiSelect);
 app.component("ToggleButton", ToggleButton);
+app.component("Toolbar", Toolbar);
 app.component("FaIcon", FontAwesomeIcon);
 
 app.mount("#app");

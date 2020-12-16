@@ -35,6 +35,7 @@ import { useRoute, useRouter } from "vue-router";
 import VkLoader from "@/components/VkLoader.vue";
 import { Candidate, EmployeeProper } from "@/mock-server";
 import { deleteKandydat, getKandydat, getPracownikById, getStanowiska, putKandydat } from "@/utils/api";
+import { apiRoot } from "@/utils/api-root";
 
 export default defineComponent({
   setup() {
@@ -56,8 +57,10 @@ export default defineComponent({
       await putKandydat(params.id as string, pracownik);
       router.push("/home/candidates");
     };
-    const onEmploy = () => {
-      return 0;
+    const onEmploy = async () => {
+      //@ts-ignore
+      await apiRoot.post(`kandydaci/employKandydat/${params.id}`);
+      router.push("/home/employees");
     };
     const onDelete = async () => {
       await deleteKandydat(params.id as string);

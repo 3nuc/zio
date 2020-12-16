@@ -8,7 +8,6 @@ const beforeRequest: BeforeRequestHook = (request) => {
   const token = localStorage.getItem("token");
   const header = request.headers.get("Authorization");
   if (!header?.startsWith("Basic")) request.headers.append("Authorization", `Bearer ${token}`);
-  console.log(token, header, request.headers);
 };
 export const apiRoot = ky.create({
   prefixUrl: "https://localhost:8080/api",

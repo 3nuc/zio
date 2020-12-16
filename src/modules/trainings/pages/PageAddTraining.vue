@@ -11,7 +11,7 @@
         v-model="form.rodzaj_szkolenia"
         :options="training_types"
         option-label="nazwaSzkKat"
-        placeholder="Kategoria projektu"
+        placeholder="Kategoria szkolenia"
       />
     </div>
     <Button class="p-button-success" :disabled="!isAllFilled" @click="onCreate">Dodaj szkolenie</Button>
@@ -42,7 +42,7 @@ export default defineComponent({
     });
     const onCreate = async () => {
       //@ts-expect-error xdd
-      await addSzkolenie({ ...form, rodzaj_szkolenia: form.rodzaj_szkolenia.key });
+      await addSzkolenie(form);
       router.push("/home/trainings");
     };
     return {

@@ -18,12 +18,18 @@
       <h1>
         <div class="p-field">{{ training.nazwa }}</div>
       </h1>
-      <div class="p-field">{{ training.rodzaj_szkolenia }}</div>
+      <div class="p-field">Kategoria: {{ training.rodzaj_szkolenia?.nazwaSzkKat }}</div>
       <div class="p-field">{{ date }}</div>
     </template>
 
     <div class="p-field">
-      <ToggleButton v-model="isEditing" class="p-button-warning" on-label="Anuluj" off-label="Edytuj" />
+      <ToggleButton
+        :model-value="isEditing"
+        @change="initEdit()"
+        class="p-button-warning"
+        on-label="Anuluj"
+        off-label="Edytuj"
+      />
       <Button class="p-button-danger" @click="onDelete">Usuń projekt</Button>
     </div>
   </VkLoader>
@@ -51,7 +57,7 @@ export default defineComponent({
         id: params.id as string,
         data_szkolenia: edit.data_szkolenia,
         nazwa: edit.nazwa,
-        rodzaj_szkolenia: 1,
+        rodzaj_szkolenia: edit.rodzaj_szkolenia,
       };
       await editSzkolenie(szkolenie);
       router.push("/home/trainings");
@@ -61,11 +67,25 @@ export default defineComponent({
       await removeSzkolenie(params.id as string);
       router.push("/home/trainings");
     };
+    const isEditing = ref(false);
+    const initEdit = () => {
+      isEditing.value = !isEditing.value;
+      //@ts-ignore
+      edit.nazwa = training.value.nazwa;
+      //@ts-ignore
+      edit.data_szkolenia = training.value?.data_szkolenia;
+      //@ts-ignore
+      edit.rodzaj_szkolenia = trainingCategory.value.find(
+        //@ts-ignore
+        (x: any) => x.idSzkKat === training.value?.rodzaj_szkolenia?.idSzkKat
+      );
+    };
     const edit = reactive<Omit<Training, "id">>({ nazwa: "", data_szkolenia: "", rodzaj_szkolenia: 0 });
     return {
+      initEdit,
       training,
       isLoading,
-      isEditing: ref(false),
+      isEditing,
       onEdit,
       onDelete,
       edit,
