@@ -86,7 +86,6 @@ export default defineComponent({
       };
       const { idProjekt } = await addProject(project);
       await new Promise((r) => setTimeout(r, 1000));
-      form.pracownicy!.forEach(async (x: any) => await addPracownikToProjekt(idProjekt, x.id));
       router.push("/home/projects");
     };
 
