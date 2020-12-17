@@ -38,6 +38,7 @@ import Dropdown from "primevue/dropdown";
 import Button from "primevue/button";
 import { PartialNull } from "@/utils/types";
 import { addPracownikToProjekt, getPracownik } from "@/utils/api";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   components: {
@@ -52,6 +53,7 @@ export default defineComponent({
       kategoria_projektu: null,
       pracownicy: null,
     });
+    const router = useRouter();
     const isFormValid = computed(
       () => ![null, ""].includes(form.nazwa) && form.kategoria_projektu !== null && (form.pracownicy?.length ?? 0) > 0
     );
@@ -85,6 +87,7 @@ export default defineComponent({
       const { idProjekt } = await addProject(project);
       await new Promise((r) => setTimeout(r, 1000));
       form.pracownicy!.forEach(async (x: any) => await addPracownikToProjekt(idProjekt, x.id));
+      router.push("/home/projects");
     };
 
     return {
