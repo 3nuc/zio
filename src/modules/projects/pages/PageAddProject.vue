@@ -80,6 +80,7 @@ export default defineComponent({
       const project = {
         nazwa: form.nazwa,
         kategoriaProjektu: form.kategoria_projektu,
+        pracownicy: form.pracownicy,
       };
       const { idProjekt } = await addProject(project);
       await new Promise((r) => setTimeout(r, 1000));

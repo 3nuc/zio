@@ -5,7 +5,13 @@
         <template v-if="isEditing">
           <Button class="p-button-success" @click="onEdit">OK</Button>
         </template>
-        <ToggleButton class="p-button-warning p-m-r-3" v-model="isEditing" off-label="Edytuj" on-label="Anuluj" />
+        <ToggleButton
+          class="p-button-warning p-m-r-3"
+          :model-value="isEditing"
+          @change="handleEdit()"
+          off-label="Edytuj"
+          on-label="Anuluj"
+        />
         <Button class="p-button-danger" @click="onDelete">Usuń projekt</Button>
       </template>
       <template #left>
@@ -34,8 +40,9 @@
         <h2>Pracownicy</h2>
         <template v-if="isEditing">
           <Listbox
-            :options="employeesFormatted"
-            v-model="edit.employees"
+            :options="employeesAllFormatted"
+            :model-value="employeesFormattedEdit"
+            @change="edit.employees = $event.value"
             option-label="fullName"
             placeholder="Wybierz pracownika"
             multiple
@@ -43,7 +50,7 @@
           />
         </template>
         <template v-else>
-          <div v-if="project.pracownicy?.length ?? 0 === 0">Brak pracownków</div>
+          <div v-if="(project.pracownicy?.length ?? 0) === 0">Brak pracownków</div>
           <EmployeeTileList :employees="project.pracownicy" v-else />
         </template>
       </content>
@@ -59,9 +66,12 @@ import VkLoader from "@/components/VkLoader.vue";
 import { getSingleProject, getEmployees, getProjectCategories } from "@/utils/service";
 import EmployeeTileList from "@/modules/employee/molecules/EmployeeTileList.vue";
 import { Project, ProjectProper } from "@/mock-server";
-import { getPracownik } from "@/utils/api";
+import { addPracownikToProjekt, deletePracownikFromProjekt, getPracownik } from "@/utils/api";
 import { apiRoot } from "@/utils/api-root";
 import Listbox from "primevue/listbox";
+
+import intersection from "lodash/intersection";
+import difference from "lodash/difference";
 
 export default defineComponent({
   setup() {
@@ -71,20 +81,53 @@ export default defineComponent({
     const { data: project, isLoading: isProjectLoading } = useRequest(getSingleProject(route.params.id as string));
     const { data: categories } = useRequest(getProjectCategories());
     const { data: employees } = useRequest(getPracownik());
-    const employeesFormatted = computed(() =>
-      (employees.value ?? []).map((x) => ({ ...x, fullName: `${x.imie} ${x.nazwisko}` }))
-    );
 
     const isEditing = ref(false);
     const edit = reactive<any>({
       nazwa: "",
       //@ts-ignore
       kategoria_projektu: null,
+      employees: [],
     });
+    const employeesAllFormatted = computed(() =>
+      //@ts-ignore
+      (employees.value ?? []).map((x) => ({ ...x, fullName: `${x.imie} ${x.nazwisko}` }))
+    );
+    const employeesFormatted = computed(() =>
+      //@ts-ignore
+      (project?.value.pracownicy ?? []).map((x) => ({ ...x, fullName: `${x.imie} ${x.nazwisko}` }))
+    );
+    const employeesFormattedEdit = computed(() =>
+      (edit?.employees ?? []).map((x: any) => ({ ...x, fullName: `${x.imie} ${x.nazwisko}` }))
+    );
+    const handleEdit = () => {
+      isEditing.value = !isEditing.value;
+      //@ts-ignore
+      edit.employees = project.value.pracownicy;
+    };
     const onEdit = async () => {
-      const json = {};
-      await apiRoot.put(`projekt/${route.params.id}`, { json });
+      //@ts-ignore
+      const toId = (x) => x.id;
+      //@ts-ignore
+      const inputEmployeeIds = edit.employees.map(toId);
+      //@ts-ignore
+      const existingEmployeeIds = project.value.pracownicy.map(toId);
+      const employeeIdsToAdd = inputEmployeeIds.filter((x: any) => !existingEmployeeIds.includes(x));
+      console.log("toInput", inputEmployeeIds);
+      console.log("toExisting", existingEmployeeIds);
+      console.log("toAdd", employeeIdsToAdd);
+      const employeeIdsToRemove = existingEmployeeIds.filter((x: any) => !inputEmployeeIds.includes(x));
+      console.log("toDel", employeeIdsToRemove);
+
+      //@ts-ignore
+      const idProjekt = project.value.idProjekt;
+      //@ts-ignore
+      employeeIdsToAdd.forEach(async (x: any) => await addPracownikToProjekt(idProjekt as number, x));
+      //@ts-ignore
+      employeeIdsToRemove.forEach(async (x: any) => await deletePracownikFromProjekt(idProjekt as number, x));
       router.push("/home/projects");
+      const idKategoria = edit.kategoria_projektu?.idKat ?? null;
+      idKategoria && apiRoot.put(`projekt/addKategoria/${idProjekt}/${idKategoria}`);
     };
 
     const onDelete = async () => {
@@ -93,6 +136,10 @@ export default defineComponent({
     };
 
     return {
+      employeesAllFormatted,
+      employeesFormattedEdit,
+      employeesFormatted,
+      handleEdit,
       onEdit,
       onDelete,
       project,

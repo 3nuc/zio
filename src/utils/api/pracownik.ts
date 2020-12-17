@@ -22,5 +22,8 @@ export function editPracownik(id: string, pracownik: Omit<EmployeeProper, "id">)
 }
 
 export function addPracownikToProjekt(idProjektu: number, idPracownika: number) {
-  return apiRoot.put(`projekt/addPracownik/${idProjektu}/${idPracownika}`);
+  return apiRoot.put(`projekt/addPracownik/${idPracownika}/${idProjektu}`);
+}
+export function deletePracownikFromProjekt(idProjektu: number, idPracownika: number) {
+  return apiRoot.put(`projekt/removePracownik/${idPracownika}/${idProjektu}`);
 }
