@@ -22,7 +22,7 @@
     </template>
     <div class="p-field">
       <Button class="p-button-success" @click="onEmploy()">Zatrudnij kandydata</Button>
-      <ToggleButton v-model="isEditing" class="p-button-warning" on-label="Anuluj" off-label="Edytuj" />
+      <ToggleButton :modelValue="isEditing" @change="onOpenEdit" class="p-button-warning" on-label="Anuluj" off-label="Edytuj" />
       <Button class="p-button-danger" @click="onDelete()">Usuń kandydata</Button>
     </div>
   </VkLoader>
@@ -46,12 +46,26 @@ export default defineComponent({
     const { data: stanowiska, isLoading: areStanowiskoLoading } = useRequest(getStanowiska()); //i love mixing polish and english in code
     const stanowisko = computed(() => stanowiska.value?.find((st) => st.id === employee.value?.stanowisko)?.dzial);
 
-    const edit = reactive<Omit<EmployeeProper, "id">>({ imie: "", nazwisko: "", stanowisko: 0, typ_konta: 0 });
+    //@ts-ignore
+    const edit = reactive<Omit<EmployeeProper, "id">>({ imie: "", nazwisko: "", stanowisko: "1", typ_konta: "1" });
+    const isEditing = ref(false);
+    const onOpenEdit = () => {
+      if(isEditing.value) {
+        isEditing.value = false;
+        return;
+      }
+
+      edit.imie = employee.value?.imie ?? '';
+      edit.nazwisko = employee.value?.nazwisko ?? '';
+      //@ts-ignore
+      edit.stanowisko = employee.value?.stanowisko ?? "1";
+      isEditing.value = true;
+    }
     const onEdit = async () => {
       const pracownik: Omit<Candidate, "id"> = {
         imie: edit.imie,
         nazwisko: edit.nazwisko,
-        //@ts-expect-error xdd
+        //@ts-expect-error xddd
         stanowisko: stanowiska.value.find((x) => x.key === edit?.stanowisko.id),
       };
       await putKandydat(params.id as string, pracownik);
@@ -72,11 +86,12 @@ export default defineComponent({
       stanowisko,
       isEmployeeLoading,
       areStanowiskoLoading,
-      isEditing: ref(false),
+      isEditing,
       edit,
       onEdit,
       onDelete,
       onEmploy,
+      onOpenEdit
     };
   },
   components: {

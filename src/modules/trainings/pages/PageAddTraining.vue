@@ -4,7 +4,7 @@
       <InputText v-model="form.nazwa" placeholder="Nazwa szkolenia" />
     </div>
     <div class="p-field">
-      <Calendar v-model="form.data_szkolenia" placeholder="Wybierz datę" />
+      <Calendar v-model="form.data_szkolenia" placeholder="Wybierz datę" :min-date="new Date()" />
     </div>
     <div class="p-field">
       <Dropdown

@@ -1,4 +1,5 @@
 <template>
+  <div class="center">
   <form class="p-card card p-fluid" @submit.prevent="handleLogin">
     <span class="rainbow-body">
       <ul class="c-rainbow">
@@ -20,9 +21,11 @@
       <div class="p-field">
         <InputText v-model="password" type="password" placeholder="Hasło" class="item" />
       </div>
+      <div style="color: red; margin-bottom: 5px;">{{message}}</div>
       <Button v-text="'Login'" type="submit" class="p-button-success" @click="handleLogin" />
     </template>
   </form>
+    </div>
 </template>
 
 <script lang="ts">
@@ -44,18 +47,27 @@ export default defineComponent({
   setup() {
     const username = ref<string | null>("");
     const password = ref<string | null>("");
+    const message = ref<string | null>("");
     const router = useRouter();
     const isLoading = ref(false);
     async function handleLogin() {
       isLoading.value = true;
-      const { access_token, bearer_token } = await getLogin(username.value!, password.value!);
-      localStorage.setItem("token", access_token);
-      router.push("/home");
+      try {
+        const { access_token, bearer_token } = await getLogin(username.value!, password.value!);
+        localStorage.setItem("token", access_token);
+        router.push("/home");
+      } catch {
+        username.value = "";
+        password.value = "";
+        message.value="Zły login lub hasło"
+        isLoading.value = false;
+      }
     }
 
     return {
       username,
       password,
+      message,
       handleLogin,
       isLoading,
     };
@@ -182,5 +194,13 @@ $root: ".c-rainbow";
   50% {
     transform: translatey(calc(var(--axis-y) * -1));
   }
+}
+
+.center {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>

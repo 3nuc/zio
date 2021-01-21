@@ -55,7 +55,7 @@ export default defineComponent({
     });
     const router = useRouter();
     const isFormValid = computed(
-      () => ![null, ""].includes(form.nazwa) && form.kategoria_projektu !== null && (form.pracownicy?.length ?? 0) > 0
+      () => ![null, ""].includes(form.nazwa?.trim() ?? '') && form.kategoria_projektu !== null && (form.pracownicy?.length ?? 0) > 0
     );
     const { data: projectCategories } = useRequest(getProjectCategories());
     const { data: employees, isLoading: areEmployeesLoading } = useRequest(getPracownik());

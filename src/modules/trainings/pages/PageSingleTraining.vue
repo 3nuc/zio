@@ -19,7 +19,7 @@
         <div class="p-field">{{ training.nazwa }}</div>
       </h1>
       <div class="p-field">Kategoria: {{ training.rodzaj_szkolenia?.nazwaSzkKat }}</div>
-      <div class="p-field">{{ date }}</div>
+      <div class="p-field">{{ dayjs }}</div>
     </template>
 
     <div class="p-field">
@@ -91,6 +91,7 @@ export default defineComponent({
       edit,
       date,
       trainingCategory,
+      dayjs: dayjs(date.value).format("L LT"),
     };
   },
   components: {

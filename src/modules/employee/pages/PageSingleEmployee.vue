@@ -12,7 +12,7 @@
           on-label="Anuluj"
           off-label="Edytuj"
         />
-        <Button class="p-button-danger" @click="onDelete()">Zwolnij pracownika</Button>
+        <Button class="p-button-danger" @click="onDelete()" :disabled="employee?.imie==='test' && employee?.nazwisko ==='Test'">Zwolnij pracownika</Button>
       </template>
     </Toolbar>
     <template v-if="isEditing">

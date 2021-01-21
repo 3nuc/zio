@@ -15,12 +15,12 @@
         placeholder="Stanowisko"
       />
     </div>
-    <Button class="p-button-success" @click="onCreate">Dodaj kandydata</Button>
+    <Button class="p-button-success" @click="onCreate" :disabled="!isOk">Dodaj kandydata</Button>
   </form>
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, reactive, ref } from "vue";
+import { computed, defineComponent, onMounted, reactive, ref } from "vue";
 import { Candidate } from "@/mock-server";
 import { PartialNull } from "@/utils/types";
 import { useAllFilled } from "@/composables";
@@ -55,11 +55,16 @@ export default defineComponent({
       router.push("/home/candidates");
     };
 
+    const isOk = computed(() => {
+      return form?.imie?.trim() && form?.nazwisko?.trim() && form?.stanowisko !== null;
+    });
+
     return {
       form,
       isAllFilled,
       positions,
       onCreate,
+      isOk,
     };
   },
 });

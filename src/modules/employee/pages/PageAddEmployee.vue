@@ -9,7 +9,7 @@
     <div class="p-field">
       <Dropdown v-model="form.stanowiska" :options="positions" option-label="nazwa" placeholder="Stanowisko" />
     </div>
-    <Button class="p-button-success" @click="onAddEmployee">Dodaj kandydata</Button>
+    <Button class="p-button-success" @click="onAddEmployee" :disabled="!isOk">Dodaj pracownika</Button>
   </form>
 </template>
 
@@ -45,10 +45,14 @@ export default defineComponent({
       });
       router.push("/home/employees");
     };
+    const isOk = computed(() => {
+      return form.imie.trim() && form.nazwisko.trim() && form.stanowisko !== null;
+    })
     return {
       form,
       positions,
       onAddEmployee,
+      isOk
     };
   },
 });

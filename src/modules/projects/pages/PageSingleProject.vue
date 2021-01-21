@@ -113,9 +113,6 @@ export default defineComponent({
       //@ts-ignore
       const existingEmployeeIds = project.value.pracownicy.map(toId);
       const employeeIdsToAdd = inputEmployeeIds.filter((x: any) => !existingEmployeeIds.includes(x));
-      console.log("toInput", inputEmployeeIds);
-      console.log("toExisting", existingEmployeeIds);
-      console.log("toAdd", employeeIdsToAdd);
       const employeeIdsToRemove = existingEmployeeIds.filter((x: any) => !inputEmployeeIds.includes(x));
       console.log("toDel", employeeIdsToRemove);
 
