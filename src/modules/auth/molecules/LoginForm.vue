@@ -34,9 +34,7 @@ import VkButton from "@/components/VkButton.vue";
 import VkLoader from "@/components/VkLoader.vue";
 import { getLogin } from "@/utils/api/login";
 import { defineComponent, onMounted, ref } from "vue";
-import { useUserStore } from "../store";
 import { useRouter } from "vue-router";
-const userStore = useUserStore();
 
 export default defineComponent({
   components: {

@@ -16,13 +16,22 @@
 
 <script lang="ts">
 import HeaderButton from "@/modules/homepage/atoms/HeaderButton.vue";
-import { computed } from "vue";
-export const headerButtons = computed(() => [
-  { text: "Pracownicy", to: "/home/employees", icon: ["far", "address-card"] },
-  { text: "Szkolenia", to: "/home/trainings", icon: ["far", "lightbulb"] },
-  { text: "Kandydaci", to: "/home/candidates", icon: ["far", "grin-stars"] },
-  { text: "Projekty", to: "/home/projects", icon: ["far", "handshake"] },
-]);
+import { computed, defineComponent } from "vue";
+export default defineComponent({
+  components: {
+    HeaderButton
+  },
+  setup() {
+  const headerButtons = computed(() => [
+    { text: "Pracownicy", to: "/home/employees", icon: ["far", "address-card"] },
+    { text: "Szkolenia", to: "/home/trainings", icon: ["far", "lightbulb"] },
+    { text: "Kandydaci", to: "/home/candidates", icon: ["far", "grin-stars"] },
+    { text: "Projekty", to: "/home/projects", icon: ["far", "handshake"] },
+  ]);
+
+    return {headerButtons}
+  }
+})
 </script>
 
 <style scoped lang="scss">

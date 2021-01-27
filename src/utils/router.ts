@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory, RouteRecordRaw, RouterView } from "vue-router";
+import { createRouter, createWebHashHistory, createWebHistory, RouteRecordRaw, RouterView } from "vue-router";
 import { authRoutes } from "@/modules/auth/routes";
 import PageHomepage from "@/modules/homepage/pages/PageHomepage.vue";
 import PageProjects from "@/modules/projects/pages/PageProjects.vue";
@@ -79,7 +79,7 @@ const routes: RouteRecordRaw[] = [
 
 export const router = createRouter({
   routes,
-  history: createWebHistory(),
+  history: createWebHashHistory(),
 });
 
 router.beforeEach(async (to, from) => {
