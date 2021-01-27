@@ -11,13 +11,13 @@
 </template>
 
 <script setup lang="ts">
-export { default as HomepageFooter } from "@/modules/homepage/molecules/HomepageFooter.vue";
-export { default as HomepageHeader } from "../molecules/HomepageHeader.vue";
+import HomepageFooter from "@/modules/homepage/molecules/HomepageFooter.vue";
+import HomepageHeader from "../molecules/HomepageHeader.vue";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
 
-export const onClick = () => {
+const onClick = () => {
   console.log('go');
   localStorage.removeItem("token");
   window.location.reload();

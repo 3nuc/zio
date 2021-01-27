@@ -14,8 +14,8 @@
   </header>
 </template>
 
-<script setup lang="ts">
-export { default as HeaderButton } from "@/modules/homepage/atoms/HeaderButton.vue";
+<script lang="ts">
+import HeaderButton from "@/modules/homepage/atoms/HeaderButton.vue";
 import { computed } from "vue";
 export const headerButtons = computed(() => [
   { text: "Pracownicy", to: "/home/employees", icon: ["far", "address-card"] },

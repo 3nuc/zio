@@ -32,7 +32,7 @@ export default defineComponent({
 </script>
 
 <!--eslint-disable-next-line prettier/prettier-->
-<style scoped lang="scss" vars={sizeFormatted}>
+<style scoped lang="scss">
 @mixin anim-infinite($name, $duration) {
   animation-name: $name;
   animation-duration: $duration;

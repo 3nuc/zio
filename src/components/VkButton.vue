@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang="ts">
-export { default as VkBaseButton } from "@/components/VkBaseButton.vue";
+import VkBaseButton from "@/components/VkBaseButton.vue";
 </script>
 
 <style scoped lang="scss">

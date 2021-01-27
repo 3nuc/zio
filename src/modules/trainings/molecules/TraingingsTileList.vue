@@ -7,7 +7,7 @@
   </vk-tile-list>
 </template>
 
-<script setup lang="ts">
+<script lang="ts">
 import { defineComponent } from "vue";
 import { PropType } from "vue";
 import { Training } from "@/mock-server";
