@@ -13,7 +13,7 @@ module.exports = {
       },
     },
     // this is necessary becaue OpenID Connect must redirect to https:// URL eg. after logout
-    https: true,
+    https: false,
     /**
      * Suppress /sockjs-node CORS errors that appear when running `yarn serve` on https://
      * https://stackoverflow.com/a/44748420/10706046
@@ -25,7 +25,6 @@ module.exports = {
     //     "X-Requested-With, content-type, Authorization",
     // },
     //fix CORS errors for dev server socket (removing this will break hot reloading)
-    host: "localhost",
   },
   css: {
     loaderOptions: {
